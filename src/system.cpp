@@ -40,10 +40,11 @@ std::string System::OperatingSystem() { return string(); }
 int System::RunningProcesses() { return 0; }
 
 // TODO: Return the total number of processes on the system
-int System::TotalProcesses() { return 0; }
+int System::TotalProcesses() { 
+    return lp::TotalProcesses();
+}
 
 // TODO: Return the number of seconds since the system started running
 long int System::UpTime() {
-    long uptime = lp::UpTime();
-    return uptime;
+    return lp::UpTime();
 }
