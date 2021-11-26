@@ -9,6 +9,7 @@
 #include "linux_parser.h"
 
 using std::stof;
+using std::stoi;
 using std::string;
 using std::to_string;
 using std::vector;
@@ -53,11 +54,9 @@ string LinuxParser::Kernel() {
 // BONUS: Update this to use std::filesystem
 vector<int> LinuxParser::Pids() {
   vector<int> pids;
-  // DIR* directory = opendir(kProcDirectory.c_str());
-  const fs::path& directory2 = kProcDirectory; 
-  // struct dirent* file;
-  if (fs::exists(directory2) && fs::is_directory(directory2)) {
-    for (auto entry: fs::directory_iterator(directory2)) {
+  const fs::path& directory = kProcDirectory; 
+  if (fs::exists(directory) && fs::is_directory(directory)) {
+    for (auto entry: fs::directory_iterator(directory)) {
       string dir = entry.path();
       std::size_t pos = kProcDirectory.size();
       std::string file = dir.substr(pos);
@@ -67,23 +66,32 @@ vector<int> LinuxParser::Pids() {
       }
     }
   }
-  /* while ((file = readdir(directory)) != nullptr) {
-    // Is this a directory?
-    if (file->d_type == DT_DIR) {
-      // Is every character of the name a digit?
-      string filename(file->d_name);
-      if (std::all_of(filename.begin(), filename.end(), isdigit)) {
-        int pid = stoi(filename);
-        pids.push_back(pid);
-      }
-    }
-  }
-  closedir(directory); */
   return pids;
 }
 
 // TODO: Read and return the system memory utilization
-float LinuxParser::MemoryUtilization() { return 0.0; }
+float LinuxParser::MemoryUtilization() {
+  string line, str_mem_total {"MemTotal"}, str_mem_free {"MemFree"};
+  int mem_total {-1}, mem_free {-1}, mem_utilized;
+  std::ifstream stream(kProcDirectory + kMeminfoFilename);
+  if (stream.is_open()) {
+    while(std::getline(stream, line)) {
+      if (line.find(str_mem_total) != string::npos) {
+        int index = line.find(" ");
+        mem_total = stoi(line.substr(index + 1));
+      }
+      if (line.find(str_mem_free) != string::npos) {
+        int index = line.find(" ");
+        mem_free = stoi(line.substr(index + 1));
+      }
+      if (mem_total != -1 && mem_free != -1) {
+        mem_utilized = mem_total - mem_free;
+        return static_cast<double>(mem_utilized) / static_cast<double>(mem_total);
+      }
+    }
+  }
+  return 0.0;
+}
 
 // TODO: Read and return the system uptime
 long LinuxParser::UpTime() { 
