@@ -12,6 +12,7 @@ using std::stof;
 using std::stoi;
 using std::string;
 using std::to_string;
+using std::istringstream;
 using std::vector;
 namespace fs = std::filesystem;
 
@@ -121,7 +122,26 @@ long LinuxParser::ActiveJiffies() { return 0; }
 long LinuxParser::IdleJiffies() { return 0; }
 
 // TODO: Read and return CPU utilization
-vector<string> LinuxParser::CpuUtilization() { return {}; }
+vector<string> LinuxParser::CpuUtilization() {
+  vector<string> cpu_data = {};
+  string line, cpu = "cpu", line_data;
+  std::ifstream stream(kProcDirectory + kStatFilename);
+  if (stream.is_open()) {
+    while(std::getline(stream, line)) {
+      if (line.find(cpu) != string::npos) {
+        int index = line.find(" ");
+        line_data = line.substr(index + 1);
+        istringstream ld_ss(line_data);
+        string data;
+        while (ld_ss >> data) {
+          cpu_data.push_back(data);
+        }
+        return cpu_data;
+      }
+    }
+  }
+  return cpu_data;
+}
 
 // TODO: Read and return the total number of processes
 int LinuxParser::TotalProcesses() {

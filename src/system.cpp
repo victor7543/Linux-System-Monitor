@@ -3,6 +3,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "linux_parser.h"
 #include "process.h"
@@ -19,7 +20,12 @@ namespace lp = LinuxParser;
 You need to properly format the uptime. Refer to the comments mentioned in format. cpp for formatting the uptime.*/
 
 // TODO: Return the system's CPU
-Processor& System::Cpu() { return cpu_; }
+Processor& System::Cpu() {
+    vector<string> cpu_data = lp::CpuUtilization();
+    prev_cpu = cpu_;
+    cpu_ = Processor(cpu_data, &prev_cpu);
+    return cpu_;
+}
 
 // TODO: Return a container composed of the system's processes
 vector<Process>& System::Processes() { 

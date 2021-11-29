@@ -1,11 +1,12 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
 
-#include <string>
-#include <vector>
-
+#include <optional>
+#include <chrono>
 #include "process.h"
 #include "processor.h"
+
+using std::optional;
 
 class System {
  public:
@@ -20,8 +21,8 @@ class System {
 
   // TODO: Define any necessary private members
  private:
-  Processor cpu_ = {};
   std::vector<Process> processes_ = {};
+  Processor prev_cpu, cpu_;
 };
 
 #endif
