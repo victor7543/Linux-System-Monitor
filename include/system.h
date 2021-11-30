@@ -23,6 +23,7 @@ class System {
  private:
   std::vector<Process> processes_ = {};
   Processor prev_cpu, cpu_;
+  int process_count = 0;
 };
 
 #endif
