@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <unistd.h>
 
 #include "process.h"
 #include "linux_parser.h"
@@ -30,7 +31,7 @@ string Process::Ram() {
     double ram;
     int pos;
     string ram_str = lp::Ram(pid_);
-    ram = std::stod(ram_str)/ 1024.0f;
+    ram = std::stod(ram_str)/ 1000.0f;
     ram_str = to_string(ram);
     pos = ram_str.find(".");
     ram_str = ram_str.substr(0, pos+2);
@@ -44,7 +45,9 @@ string Process::User() {
 
 // TODO: Return the age of this process (in seconds)
 long int Process::UpTime() {
-    return 0;
+    long clock_ticks = lp::UpTime(pid_);
+    long seconds = clock_ticks / sysconf(_SC_CLK_TCK);
+    return seconds;
 }
 
 // TODO: Overload the "less than" comparison operator for Process objects
