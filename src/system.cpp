@@ -28,7 +28,8 @@ Processor& System::Cpu() {
 }
 
 // TODO: Return a container composed of the system's processes
-vector<Process>& System::Processes() { 
+vector<Process>& System::Processes() {
+    processes_ = vector<Process> {};
     vector<int> pids = lp::Pids();
     for (int pid : pids) {
         processes_.push_back(Process(pid));

@@ -31,11 +31,16 @@ string Process::Ram() {
     double ram;
     int pos;
     string ram_str = lp::Ram(pid_);
-    ram = std::stod(ram_str)/ 1000.0f;
-    ram_str = to_string(ram);
-    pos = ram_str.find(".");
-    ram_str = ram_str.substr(0, pos+2);
-    return ram_str;
+    if (ram_str.size() > 0) {
+        ram = std::stod(ram_str)/ 1000.0f;
+        ram_str = to_string(ram);
+        pos = ram_str.find(".");
+        ram_str = ram_str.substr(0, pos+2);
+        return ram_str;
+    }
+    else {
+        return "";
+    }
 }
 
 // TODO: Return the user (name) that generated this process

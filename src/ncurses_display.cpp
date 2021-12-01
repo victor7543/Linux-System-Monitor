@@ -53,7 +53,7 @@ void NCursesDisplay::DisplaySystem(System& system, WINDOW* window) {
 }
 
 void NCursesDisplay::DisplayProcesses(std::vector<Process>& processes,
-                                      WINDOW* window, int n) {
+                                      WINDOW* window) {
   int row{0};
   int const pid_column{2};
   int const user_column{9};
@@ -69,7 +69,7 @@ void NCursesDisplay::DisplayProcesses(std::vector<Process>& processes,
   mvwprintw(window, row, time_column, "TIME+");
   mvwprintw(window, row, command_column, "COMMAND");
   wattroff(window, COLOR_PAIR(2));
-  for (int i = 0; i < n; ++i) {
+  for (int i = 0; i < static_cast<int>(processes.size()); ++i) {
     //You need to take care of the fact that the cpu utilization has already been multiplied by 100.
     // Clear the line
     mvwprintw(window, ++row, pid_column, (string(window->_maxx-2, ' ').c_str()));
@@ -86,7 +86,7 @@ void NCursesDisplay::DisplayProcesses(std::vector<Process>& processes,
   }
 }
 
-void NCursesDisplay::Display(System& system, int n) {
+void NCursesDisplay::Display(System& system) {
   system.Cpu();
   initscr();      // start ncurses
   noecho();       // do not print input values
@@ -96,7 +96,7 @@ void NCursesDisplay::Display(System& system, int n) {
   int x_max{getmaxx(stdscr)};
   WINDOW* system_window = newwin(9, x_max - 1, 0, 0);
   WINDOW* process_window =
-      newwin(3 + n, x_max - 1, system_window->_maxy + 1, 0);
+      newwin(system.Processes().size() + 10, x_max - 1, system_window->_maxy + 1, 0);
 
   while (1) {
     init_pair(1, COLOR_BLUE, COLOR_BLACK);
@@ -104,7 +104,7 @@ void NCursesDisplay::Display(System& system, int n) {
     box(system_window, 0, 0);
     box(process_window, 0, 0);
     DisplaySystem(system, system_window);
-    DisplayProcesses(system.Processes(), process_window, n);
+    DisplayProcesses(system.Processes(), process_window);
     wrefresh(system_window);
     wrefresh(process_window);
     refresh();

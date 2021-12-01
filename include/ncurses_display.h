@@ -7,9 +7,9 @@
 #include "system.h"
 
 namespace NCursesDisplay {
-void Display(System& system, int n = 16);
+void Display(System& system);
 void DisplaySystem(System& system, WINDOW* window);
-void DisplayProcesses(std::vector<Process>& processes, WINDOW* window, int n);
+void DisplayProcesses(std::vector<Process>& processes, WINDOW* window);
 std::string ProgressBar(float percent);
 };  // namespace NCursesDisplay
 
