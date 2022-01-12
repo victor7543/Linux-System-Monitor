@@ -20,9 +20,8 @@ class Processor {
   Processor(vector<string> data, Processor* PrevCPU) : Processor(data) {
     PrevCPU_ = PrevCPU;
   }
-  float Utilization();  // TODO: See src/processor.cpp
+  float Utilization();
 
-  // TODO: Declare any necessary private members
  private:
   int user = 0, nice = 0, system = 0, idle = 0, iowait = 0, irq = 0, softirq = 0, steal = 0, guest = 0, guest_nice = 0;
   Processor* PrevCPU_ = nullptr;

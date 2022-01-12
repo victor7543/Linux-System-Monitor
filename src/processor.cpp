@@ -3,7 +3,6 @@
 
 using namespace std;
 
-// TODO: Return the aggregate CPU utilization
 float Processor::Utilization() {
     int prev_idle, idle, prev_non_idle, non_idle, prev_total, total, total_dif, idle_dif;
     prev_idle = PrevCPU_->idle + PrevCPU_->iowait;
