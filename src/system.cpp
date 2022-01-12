@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 #include "linux_parser.h"
 #include "process.h"
@@ -22,19 +23,33 @@ You need to properly format the uptime. Refer to the comments mentioned in forma
 // TODO: Return the system's CPU
 Processor& System::Cpu() {
     vector<string> cpu_data = lp::CpuUtilization();
-    prev_cpu = cpu_;
-    cpu_ = Processor(cpu_data, &prev_cpu);
-    return cpu_;
+    prev_cpu = cpu;
+    cpu = Processor(cpu_data, &prev_cpu);
+    return cpu;
 }
 
 // TODO: Return a container composed of the system's processes
-vector<Process>& System::Processes() {
-    processes_ = vector<Process> {};
-    vector<int> pids = lp::Pids();
+vector<Process> &System::Processes() {
+    prev_processes = processes;
+    processes = vector<Process> {};
+    prev_pids = pids;
+    pids = lp::Pids();
     for (int pid : pids) {
-        processes_.push_back(Process(pid));
+        bool pid_found = false;
+        for (Process proc : prev_processes) {
+            if (pid == proc.Pid()) {
+                Process *p = new Process(pid);
+                *p = proc;
+                processes.push_back(Process(pid, p));
+                pid_found = true;
+                break;
+            }
+        }
+        if (!pid_found) {
+            processes.push_back(Process(pid));
+        }
     }
-    return processes_; 
+    return processes;
 }
 
 // TODO: Return the system's kernel identifier (string)

@@ -17,15 +17,15 @@ class Processor {
    softirq(stoi(data[6])), steal(stoi(data[7])),
    guest(stoi(data[8])), guest_nice(stoi(data[9])) {
   }
-  Processor(vector<string> data, Processor* cpu) : Processor(data) {
-    PrevCPU = cpu;
+  Processor(vector<string> data, Processor* PrevCPU) : Processor(data) {
+    PrevCPU_ = PrevCPU;
   }
   float Utilization();  // TODO: See src/processor.cpp
 
-  Processor* PrevCPU = nullptr;
   // TODO: Declare any necessary private members
  private:
-  int user, nice, system, idle, iowait, irq, softirq, steal, guest, guest_nice;
+  int user = 0, nice = 0, system = 0, idle = 0, iowait = 0, irq = 0, softirq = 0, steal = 0, guest = 0, guest_nice = 0;
+  Processor* PrevCPU_ = nullptr;
 };
 
 #endif

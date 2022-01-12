@@ -21,9 +21,10 @@ class System {
 
   // TODO: Define any necessary private members
  private:
-  std::vector<Process> processes_ = {};
-  Processor prev_cpu, cpu_;
+  std::vector<Process> processes = {}, prev_processes = {};
+  Processor prev_cpu, cpu = Processor();
   int process_count = 0;
+  vector<int> pids = {}, prev_pids = {};
 };
 
 #endif
