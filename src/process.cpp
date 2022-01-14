@@ -12,6 +12,7 @@
 using std::string;
 using std::to_string;
 using std::vector;
+using std::stod;
 namespace lp = LinuxParser;
 
 int Process::Pid() {
@@ -48,19 +49,15 @@ string Process::Command() {
     return command;
 }
 
-string Process::Ram() {
-    double ram;
-    int pos;
+int Process::Ram() {
+    int ram;
     string ram_str = lp::Ram(pid_);
     if (ram_str.size() > 0) {
-        ram = std::stod(ram_str)/ 1000.0f;
-        ram_str = to_string(ram);
-        pos = ram_str.find(".");
-        ram_str = ram_str.substr(0, pos+2);
-        return ram_str;
+        ram = stod(ram_str)/ 1000.0f;
+        return ram;
     }
     else {
-        return "";
+        return 0;
     }
 }
 
@@ -73,5 +70,5 @@ int Process::UpTime() {
     double start_time = clock_ticks / static_cast<double>(sysconf(_SC_CLK_TCK));
     this->sys_uptime = lp::UpTime();
     this->uptime = this->sys_uptime - start_time;
-    return static_cast<int>(this->uptime);
+    return static_cast<long>(this->uptime);
 }

@@ -60,7 +60,7 @@ vector<int> LinuxParser::Pids() {
       std::string file = dir.substr(pos);
         if (std::all_of(file.begin(), file.end(), isdigit)) {
           int pid = stoi(file);
-          pids.push_back(pid);
+          pids.emplace_back(pid);
       }
     }
   }
@@ -115,7 +115,7 @@ vector<string> LinuxParser::CpuUtilization() {
         istringstream ld_ss(line_data);
         string data;
         while (ld_ss >> data) {
-          cpu_data.push_back(data);
+          cpu_data.emplace_back(data);
         }
         return cpu_data;
       }
@@ -134,7 +134,7 @@ vector<int> LinuxParser::ProcCpuUtilization(int pid) {
       for (int i = 0; i < 22; i++) {
         linestream >> value;
         if ((i > 12 && i < 17)) {
-          cpu_values.push_back(stoi(value));
+          cpu_values.emplace_back(stoi(value));
         }
       }
       return cpu_values;

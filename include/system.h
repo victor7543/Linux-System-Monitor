@@ -1,12 +1,8 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
 
-#include <optional>
-#include <chrono>
 #include "process.h"
 #include "processor.h"
-
-using std::optional;
 
 class System {
  public:

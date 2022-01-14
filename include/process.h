@@ -4,15 +4,17 @@
 #include <string>
 #include <chrono>
 
+using std::string;
+
 class Process {
  public:
   Process(int pid) : pid_(pid) {}
   Process(int pid, Process* PrevProcess) : pid_(pid), PrevProcess_(PrevProcess) {}
   int Pid();                              
-  std::string User();                     
-  std::string Command();                  
+  string User();                     
+  string Command();                  
   double CpuUtilization();                
-  std::string Ram();                      
+  int Ram();                      
   int UpTime();                      
   bool operator<(Process const& a) const; 
 

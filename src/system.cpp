@@ -11,8 +11,6 @@
 #include "processor.h"
 #include "system.h"
 
-using std::set;
-using std::size_t;
 using std::string;
 using std::vector;
 namespace lp = LinuxParser;
@@ -35,13 +33,13 @@ vector<Process> &System::Processes() {
             if (pid == proc.Pid()) {
                 Process *p = new Process(pid);
                 *p = proc;
-                processes.push_back(Process(pid, p));
+                processes.emplace_back(pid, p);
                 pid_found = true;
                 break;
             }
         }
         if (!pid_found) {
-            processes.push_back(Process(pid));
+            processes.emplace_back(pid);
         }
     }
     return processes;

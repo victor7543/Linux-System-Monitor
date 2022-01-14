@@ -70,17 +70,24 @@ void NCursesDisplay::DisplayProcesses(std::vector<Process>& processes,
   mvwprintw(window, row, command_column, "COMMAND");
   wattroff(window, COLOR_PAIR(2));
   for (int i = 0; i < static_cast<int>(processes.size()); ++i) {
+    int pid = processes[i].Pid();
+    string user = processes[i].User();
+    double cpu = processes[i].CpuUtilization()*100;
+    int ram = processes[i].Ram();
+    long uptime = processes[i].UpTime();
+    string command =  processes[i].Command().substr(0, window->_maxx - 46);
+    if (pid < 1 || user.empty() || cpu < 0 || ram < 0 || uptime < 1 || command.empty()) {
+      continue;
+    }
     mvwprintw(window, ++row, pid_column, (string(window->_maxx-2, ' ').c_str()));
-    
-    mvwprintw(window, row, pid_column, to_string(processes[i].Pid()).c_str());
-    mvwprintw(window, row, user_column, processes[i].User().c_str());
-    double cpu = processes[i].CpuUtilization() * 100;
+    mvwprintw(window, row, pid_column, to_string(pid).c_str());
+    mvwprintw(window, row, user_column, user.c_str());
     mvwprintw(window, row, cpu_column, to_string(cpu).substr(0, 4).c_str());
-    mvwprintw(window, row, ram_column, processes[i].Ram().c_str());
+    mvwprintw(window, row, ram_column, to_string(ram).c_str());
     mvwprintw(window, row, time_column,
-              Format::ElapsedTime(processes[i].UpTime()).c_str());
+              Format::ElapsedTime(uptime).c_str());
     mvwprintw(window, row, command_column,
-              processes[i].Command().substr(0, window->_maxx - 46).c_str());
+              command.c_str());
   }
 }
 
