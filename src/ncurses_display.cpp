@@ -53,7 +53,7 @@ void NCursesDisplay::DisplaySystem(System& system, WINDOW* window) {
 }
 
 void NCursesDisplay::DisplayProcesses(std::vector<Process>& processes,
-                                      WINDOW* window) {
+                                      WINDOW* window, int rows_offset) {
   int row{0};
   int const pid_column{2};
   int const user_column{9};
@@ -69,7 +69,7 @@ void NCursesDisplay::DisplayProcesses(std::vector<Process>& processes,
   mvwprintw(window, row, time_column, "TIME+");
   mvwprintw(window, row, command_column, "COMMAND");
   wattroff(window, COLOR_PAIR(2));
-  for (int i = 0; i < static_cast<int>(processes.size()); ++i) {
+  for (int i = 0; i < static_cast<int>(processes.size()); i++) {
     int pid = processes[i].Pid();
     string user = processes[i].User();
     double cpu = processes[i].CpuUtilization()*100;
@@ -89,6 +89,8 @@ void NCursesDisplay::DisplayProcesses(std::vector<Process>& processes,
     mvwprintw(window, row, command_column,
               command.c_str());
   }
+    move(row + rows_offset, 0); /* Moving the cursor to the right position to call wclrtobot later.
+                                   If this is not done, some lines can continue to be shown even after a process ceases to exist. */
 }
 
 void NCursesDisplay::Display(System& system) {
@@ -96,11 +98,12 @@ void NCursesDisplay::Display(System& system) {
   noecho();       // do not print input values
   cbreak();       // terminate ncurses on ctrl + c
   start_color();  // enable color
-
+  int rows_offset = 10;
+  int total_rows = system.Processes().size() + rows_offset;
   int x_max{getmaxx(stdscr)};
   WINDOW* system_window = newwin(9, x_max - 1, 0, 0);
   WINDOW* process_window =
-      newwin(system.Processes().size() + 10, x_max - 1, system_window->_maxy + 1, 0);
+      newwin(total_rows, x_max - 1, system_window->_maxy + 1, 0);
 
   while (1) {
     init_pair(1, COLOR_BLUE, COLOR_BLACK);
@@ -108,7 +111,8 @@ void NCursesDisplay::Display(System& system) {
     box(system_window, 0, 0);
     box(process_window, 0, 0);
     DisplaySystem(system, system_window);
-    DisplayProcesses(system.Processes(), process_window);
+    wclrtobot(process_window);
+    DisplayProcesses(system.Processes(), process_window, rows_offset);
     wrefresh(system_window);
     wrefresh(process_window);
     refresh();

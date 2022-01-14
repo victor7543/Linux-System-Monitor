@@ -2,7 +2,6 @@
 #define PROCESS_H
 
 #include <string>
-#include <chrono>
 
 using std::string;
 
@@ -16,12 +15,15 @@ class Process {
   double CpuUtilization();                
   int Ram();                      
   int UpTime();                      
-  bool operator<(Process const& a) const; 
-
+  bool operator<(Process const& a) const;
  private:
-  int pid_ = 0, u_time = 0, s_time = 0, cu_time = 0, cs_time = 0;
-  double sys_uptime = 0.0, uptime = 0.0;
-  std::chrono::_V2::system_clock::time_point t_point;
+  int pid_ = 0;
+  int u_time = 0;
+  int s_time = 0;
+  int cu_time = 0;
+  int cs_time = 0;
+  double sys_uptime = 0.0;
+  double uptime = 0.0;
   Process* PrevProcess_ = nullptr;
 };
 

@@ -4,22 +4,26 @@
 #include "process.h"
 #include "processor.h"
 
+using std::vector;
+using std::string;
+
 class System {
  public:
   Processor& Cpu();                 
-  std::vector<Process>& Processes();
+  vector<Process>& Processes();
   float MemoryUtilization();        
   long UpTime();                    
   int TotalProcesses();             
   int RunningProcesses();           
-  std::string Kernel();             
-  std::string OperatingSystem();    
+  string Kernel();             
+  string OperatingSystem();    
 
  private:
-  std::vector<Process> processes = {}, prev_processes = {};
-  Processor prev_cpu, cpu = Processor();
-  int process_count = 0;
+  vector<Process> processes = {};
+  vector<Process> prev_processes = {};
   vector<int> pids = {}, prev_pids = {};
+  int process_count = 0;
+  Processor prev_cpu, cpu = Processor();
 };
 
 #endif
