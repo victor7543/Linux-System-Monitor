@@ -13,12 +13,12 @@ class Process {
   std::string Command();                  
   double CpuUtilization();                
   std::string Ram();                      
-  long int UpTime();                      
+  int UpTime();                      
   bool operator<(Process const& a) const; 
 
  private:
-  int pid_ = 0, u_time = 0, s_time = 0, cu_time = 0, cs_time = 0, start_time = 0;
-  double sys_uptime = 0.0;
+  int pid_ = 0, u_time = 0, s_time = 0, cu_time = 0, cs_time = 0;
+  double sys_uptime = 0.0, uptime = 0.0;
   std::chrono::_V2::system_clock::time_point t_point;
   Process* PrevProcess_ = nullptr;
 };
