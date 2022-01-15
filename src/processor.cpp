@@ -2,7 +2,14 @@
 #include <iostream>
 
 float Processor::Utilization() {
-    int prev_idle, idle, prev_non_idle, non_idle, prev_total, total, total_dif, idle_dif;
+    int prev_idle;
+    int idle;
+    int prev_non_idle;
+    int non_idle;
+    int prev_total;
+    int total;
+    int total_dif;
+    int idle_dif;
     prev_idle = PrevCPU_->idle + PrevCPU_->iowait;
     idle = this->idle + this->iowait;
     prev_non_idle = PrevCPU_->user + PrevCPU_->nice + PrevCPU_->system + PrevCPU_->irq + PrevCPU_->softirq + PrevCPU_->steal;

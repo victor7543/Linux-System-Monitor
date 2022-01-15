@@ -23,7 +23,8 @@ class System {
   vector<Process> prev_processes = {};
   vector<int> pids = {}, prev_pids = {};
   int process_count = 0;
-  Processor prev_cpu, cpu = Processor();
+  Processor prev_cpu;
+  Processor cpu = Processor();
 };
 
 #endif

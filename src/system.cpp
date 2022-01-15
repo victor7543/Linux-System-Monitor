@@ -41,7 +41,7 @@ vector<Process> &System::Processes() {
     return processes;
 }
 
-std::string System::Kernel() {
+string System::Kernel() {
     return lp::Kernel();
 }
 
@@ -49,7 +49,7 @@ float System::MemoryUtilization() {
     return lp::MemoryUtilization();
 }
 
-std::string System::OperatingSystem() {
+string System::OperatingSystem() {
     return lp::OperatingSystem();
 }
 

@@ -19,7 +19,9 @@ string FormatTimeUnit(long unit_value) {
 }
 
 string Format::ElapsedTime(long total_seconds) {
-    long hh, mm, ss;
+    long hh;
+    long mm;
+    long ss;
     stringstream formated_time;
     hh = total_seconds / SECONDS_IN_ONE_HOUR;
     mm = (total_seconds % SECONDS_IN_ONE_HOUR) / 60;
