@@ -27,9 +27,7 @@ vector<Process> &System::Processes() {
         bool pid_found = false;
         for (Process proc : prev_processes) {
             if (pid == proc.Pid()) {
-                Process *p = new Process(pid);
-                *p = proc;
-                processes.emplace_back(pid, p);
+                processes.emplace_back(pid, &proc);
                 pid_found = true;
                 break;
             }

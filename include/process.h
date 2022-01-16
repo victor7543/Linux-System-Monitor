@@ -8,7 +8,12 @@ using std::string;
 class Process {
  public:
   Process(int pid) : pid_(pid) {}
-  Process(int pid, Process* PrevProcess) : pid_(pid), PrevProcess_(PrevProcess) {}
+  Process(int pid, Process* PrevProcess) : pid_(pid) {
+    if (PrevProcess_ == nullptr) {
+      PrevProcess_ = new Process(pid);
+    }
+    *PrevProcess_ = *PrevProcess;
+  }
   int Pid();                              
   string User();                     
   string Command();                  
