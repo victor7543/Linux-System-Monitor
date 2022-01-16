@@ -19,15 +19,14 @@ Processor& System::Cpu() {
 }
 
 vector<Process> &System::Processes() {
-    prev_processes = processes;
-    processes = vector<Process> {};
+    prev_processes = std::move(processes);
     prev_pids = pids;
     pids = lp::Pids();
     for (int pid : pids) {
         bool pid_found = false;
         for (Process proc : prev_processes) {
             if (pid == proc.Pid()) {
-                processes.emplace_back(pid, &proc);
+                processes.emplace_back(pid, proc);
                 pid_found = true;
                 break;
             }
