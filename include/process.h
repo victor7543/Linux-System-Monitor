@@ -9,8 +9,9 @@ class Process {
  public:
   Process(int pid) : pid_(pid) {}
   Process(int pid, Process* PrevProcess) : pid_(pid) {
-    if (PrevProcess_ == nullptr) {
-      PrevProcess_ = new Process(pid);
+    PrevProcess_ = new Process(pid);
+    if(PrevProcess->PrevProcess_ != nullptr) {
+      delete PrevProcess->PrevProcess_;
     }
     *PrevProcess_ = *PrevProcess;
   }
